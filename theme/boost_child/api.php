@@ -3,6 +3,8 @@
 // Disable Moodle cookies to allow public access without session.
 define('NO_MOODLE_COOKIES', true);
 
+// Adjust path to config.php if needed.
+// From theme/boost_child/api.php -> ../../config.php 
 require_once('../../config.php');
 
 // Set JSON header.

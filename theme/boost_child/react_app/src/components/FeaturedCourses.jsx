@@ -6,10 +6,11 @@ const FeaturedCourses = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Construct API URL relative to the site root
-        // Assuming the app is running on the moodle site, /local/publicapi/api.php should be accessible.
-        // We might need M.cfg.wwwroot if available, but relative path often works if at root.
-        const apiUrl = '/local/publicapi/api.php?featured=1';
+        // Construct API URL using Moodle's global config if available
+        // M.cfg.wwwroot contains the base URL of the Moodle site.
+        const baseUrl = (window.M && window.M.cfg && window.M.cfg.wwwroot) ? window.M.cfg.wwwroot : '';
+        // API is now located inside the theme
+        const apiUrl = `${baseUrl}/theme/boost_child/api.php?featured=1`;
 
         fetch(apiUrl)
             .then(response => {
