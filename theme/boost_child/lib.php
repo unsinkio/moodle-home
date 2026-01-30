@@ -7,9 +7,11 @@ function theme_boost_child_get_main_scss_content($theme) {
 
     $scss = '';
     $filename = $CFG->dirroot . '/theme/boost_child/scss/post.scss';
-    $content = file_get_contents($filename);
-    if (!empty($content)) {
-        $scss .= $content;
+    if (file_exists($filename)) {
+        $content = file_get_contents($filename);
+        if (!empty($content)) {
+            $scss .= $content;
+        }
     }
 
     return $scss;
