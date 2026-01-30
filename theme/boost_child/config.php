@@ -2,6 +2,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once(__DIR__ . '/lib.php'); // Ensure library is loaded for the SCSS callback
+
 $THEME->name = 'boost_child'; // Must match the folder name
 $THEME->sheets = [];
 $THEME->editor_sheets = [];
