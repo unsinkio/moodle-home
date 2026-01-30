@@ -32,12 +32,24 @@ try {
     // Let's implement a real query assuming standard Moodle tables.
     global $DB, $CFG;
     
-    // Fetch courses that are visible and not site course (id 1).
-    $courses = $DB->get_records_select('course', 'visible = 1 AND id != 1', null, 'sortorder ASC', 'id, fullname, summary, summaryformat');
+    // Params
+    $tagname = 'featured'; // The tag key to look for
     
-    foreach ($courses as $course) {
-        // Here we would filter by custom field if implemented.
-        // For now, return all visible courses to the React app.
+    // SQL to fetch courses that have the specific tag
+    $sql = "SELECT c.id, c.fullname, c.summary, c.summaryformat
+            FROM {course} c
+            JOIN {tag_instance} ti ON ti.itemid = c.id
+            JOIN {tag} t ON t.id = ti.tagid
+            WHERE t.name = :tagname 
+              AND ti.itemtype = 'course' 
+              AND ti.component = 'core' 
+              AND c.visible = 1
+            ORDER BY c.sortorder ASC";
+            
+    $courses = $DB->get_records_sql($sql, ['tagname' => $tagname]);
+    
+    // Fallback: If no courses found with tag, return array empty (controlled by UI)
+    // or maybe fetch some random ones? User requested selection, so empty is correct if none selected.
         
         // Handle summary image if exists (simplified).
         $imageurl = ''; 
