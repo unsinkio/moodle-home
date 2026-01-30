@@ -10,10 +10,10 @@ $THEME->enable_dock = false;
 $THEME->yuicssmodules = array();
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 $THEME->requiredblocks = '';
-$THEME->addblockposition = SIDE_PRE;
+// $THEME->addblockposition = SIDE_PRE; // Deprecated/Undefined in some contexts.
 
 $THEME->scss = function($theme) {
-    return theme_bost_child_get_main_scss_content($theme);
+    return theme_boost_child_get_main_scss_content($theme);
 };
 
 // Add React Bundle
