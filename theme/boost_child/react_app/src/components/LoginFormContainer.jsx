@@ -45,18 +45,31 @@ const LoginFormContainer = () => {
                     background: rgba(255,255,255,0.8);
                     backdrop-filter: blur(4px);
                 }
-                .login-wrapper button.btn-primary {
-                    background: #000; /* Apple style black button? Or brand color */
-                    border-radius: 12px;
+                .login-wrapper button.btn-primary, .login-wrapper button.btn-secondary, .login-wrapper input[type="submit"] {
+                    background: #1d1d1f !important; /* Apple Black */
+                    color: white !important;
+                    border-radius: 12px !important;
                     width: 100%;
-                    padding: 10px;
-                    font-weight: 500;
+                    padding: 14px;
+                    font-weight: 600;
                     border: none;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                    transition: transform 0.2s;
+                }
+                .login-wrapper button:hover, .login-wrapper input[type="submit"]:hover {
+                    background: #000 !important;
+                    transform: scale(1.01);
                 }
                 .login-wrapper .login-form .form-label {
-                    font-weight: 500;
+                    font-weight: 600;
                     margin-bottom: 0.5rem;
-                    color: #374151;
+                    color: #1d1d1f;
+                    font-size: 0.95rem;
+                }
+                .login-wrapper a {
+                    color: #0066CC !important;
+                    font-weight: 500;
+                    text-decoration: none;
                 }
                 #react-login-placeholder:not(:only-child) {
                     display: none;
