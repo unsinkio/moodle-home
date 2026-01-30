@@ -5,7 +5,7 @@ defined('MOODLE_INTERNAL') || die();
 $THEME->name = 'bost_child';
 $THEME->sheets = [];
 $THEME->editor_sheets = [];
-$THEME->parents = ['bost', 'boost'];
+$THEME->parents = ['boost', 'boost'];
 $THEME->enable_dock = false;
 $THEME->yuicssmodules = array();
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
