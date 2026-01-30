@@ -2,10 +2,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$THEME->name = 'bost_child';
+$THEME->name = 'boost_child'; // Must match the folder name
 $THEME->sheets = [];
 $THEME->editor_sheets = [];
-$THEME->parents = ['boost', 'boost'];
+$THEME->parents = ['boost']; // Herencia directa de Boost
 $THEME->enable_dock = false;
 $THEME->yuicssmodules = array();
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
