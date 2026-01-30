@@ -44,27 +44,48 @@ const LandingPage = () => {
 
             {/* Global Styles for this page Override */}
             <style>{`
-                body.page-login-index, body.page-site-index {
-                    background: #f9fafb !important; /* Soft gray */
-                }
-                /* Hide standard Moodle stuff we want to replace */
-                #page-header, #page-footer, .navbar {
-                    /* We might want to keep navbar? Or custom one? 
-                       User showed a clean design. Let's assume we hide standard wrappers if we are "Taking over"
-                       BUT 'login' page usually has simple structure. 
-                    */
-                    /* display: none;  <-- Risky if navigation needed. Let's rely on CSS mostly overriding. */
+                /* 1. HIDE MOODLE LEGACY UI */
+                /* We hide the main wrappers but keep them in DOM so we can extract the form */
+                body.react-landing-active #page-wrapper,
+                body.react-landing-active #page-footer,
+                body.react-landing-active .fixed-top, /* Navbars */
+                body.react-landing-active .navbar,
+                body.react-landing-active #region-main,
+                body.react-landing-active footer {
+                    display: none !important;
                 }
                 
-                /* Glassmorphism utility */
+                /* Ensure our root is visible and takes over */
+                body.react-landing-active {
+                    background: #F5F5F7 !important;
+                    overflow-x: hidden;
+                }
+
+                /* 2. CUSTOM ANIMATIONS */
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translate3d(0, 40px, 0);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translate3d(0, 0, 0);
+                    }
+                }
+                .animate-fade-in-up {
+                    animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                }
+                
+                /* 3. GLASSMORPHISM & UTILITIES */
                 .glass-panel {
-                    background: rgba(255, 255, 255, 0.7);
-                    backdrop-filter: blur(20px);
-                    -webkit-backdrop-filter: blur(20px);
-                    border: 1px solid rgba(255, 255, 255, 0.3);
-                    border-radius: 24px;
-                    padding: 2rem;
-                    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+                    background: rgba(255, 255, 255, 0.65);
+                    backdrop-filter: blur(24px) saturate(180%);
+                    -webkit-backdrop-filter: blur(24px) saturate(180%);
+                    border: 1px solid rgba(255, 255, 255, 0.5);
+                    border-radius: 32px; /* Super rounded */
+                    box-shadow: 
+                        0 20px 40px rgba(0,0,0,0.04),
+                        0 1px 3px rgba(0,0,0,0.02);
                 }
             `}</style>
         </div>
