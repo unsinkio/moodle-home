@@ -1,31 +1,50 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import FeaturedCourses from './components/FeaturedCourses'
+import LandingPage from './components/LandingPage'
+import './index.css' // Assuming we use tailwind or custom css? Just ensure usage.
 
 // Ensure we only mount if the container exists
 // Ensure we only mount if we are on the frontpage or want to inject dynamically
 // Strategy: If the root element doesn't exist, create it and inject it into a suitable place.
-let rootElement = document.getElementById('react-featured-courses-root');
+// But ONLY on specific pages (Login or Frontpage).
+const validPageIds = ['page-login-index', 'page-site-index'];
+const bodyId = document.body.id;
 
-if (!rootElement) {
-    // Try to find a place to inject. 
-    // In Boost, usually [role="main"] or .region-main or just after the header.
-    // Let's try to inject at the top of the main region.
-    const mainRegion = document.querySelector('[role="main"]') || document.getElementById('region-main') || document.body;
+// Check if we are on a target page
+// Also check if user is guest or not logged in? Moodle usually handles this via classes, 
+// but checking page ID is a good proxy for "Home/Login" screens.
+// If the user wants strictly login/index.php, that is 'page-login-index'.
+// Check if we are on a target page AND user is NOT logged in.
+// Moodle adds 'notloggedin' class to body for anonymous users.
+const isNotLoggedIn = document.body.classList.contains('notloggedin');
 
-    if (mainRegion) {
+if (validPageIds.includes(bodyId) && isNotLoggedIn) {
+    // Strategy for Landing Page:
+    // We want to TAKE OVER the page.
+    let rootElement = document.getElementById('react-landing-page-root');
+
+    if (!rootElement) {
+        // Create root.
         rootElement = document.createElement('div');
-        rootElement.id = 'react-featured-courses-root';
-        // Insert at the beginning of main region
-        mainRegion.insertBefore(rootElement, mainRegion.firstChild);
-        // Or append? insertBefore might be better for visibility.
-    }
-}
+        rootElement.id = 'react-landing-page-root';
 
-if (rootElement) {
-    ReactDOM.createRoot(rootElement).render(
-        <React.StrictMode>
-            <FeaturedCourses />
-        </React.StrictMode>,
-    )
+        // We append to BODY to overlay everything? Or replace #page-wrapper?
+        // Appending to body and using z-index / position absolute might be safer to avoid breaking scripts that rely on #page-wrapper structure.
+        // BUT we want to replace the view.
+
+        // Let's insert at top of body.
+        document.body.prepend(rootElement);
+
+        // We can add a class to body to allow CSS to hide strict Moodle elements
+        document.body.classList.add('react-landing-active');
+    }
+
+    if (rootElement) {
+        ReactDOM.createRoot(rootElement).render(
+            <React.StrictMode>
+                <LandingPage />
+            </React.StrictMode>,
+        )
+    }
 }
