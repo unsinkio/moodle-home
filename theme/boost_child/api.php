@@ -49,7 +49,8 @@ try {
     $courses = $DB->get_records_sql($sql, ['tagname' => $tagname]);
     
     // Fallback: If no courses found with tag, return array empty (controlled by UI)
-    // or maybe fetch some random ones? User requested selection, so empty is correct if none selected.
+    
+    foreach ($courses as $course) {
         
         // Handle summary image if exists (simplified).
         $imageurl = ''; 
