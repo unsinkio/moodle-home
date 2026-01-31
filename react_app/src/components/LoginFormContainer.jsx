@@ -1,48 +1,37 @@
 import React, { useEffect, useRef } from 'react';
 
 const LoginFormContainer = () => {
-    const containerRef = useRef(null);
+    const formTargetRef = useRef(null);
+    const idpTargetRef = useRef(null);
 
     const [hasGuestAccess, setHasGuestAccess] = React.useState(false);
 
     useEffect(() => {
         // Find the original Moodle login form
-        // Moodle 4.x usually has a login container with class 'login-container' or id 'page-login-index' context
-        // We look for the main login form. 
-        // In Boost: .login-form or #login
         const originalForm = document.querySelector('.login-form') || document.querySelector('#login') || document.querySelector('form[action*="login.php"]');
-        // Standard Moodle 4.x IDP container, or the specific one user has
         const potentialIdps = document.querySelector('.potential-idps') || document.querySelector('.login-identityproviders');
 
         // Guest Access Check
-        // Try multiple selectors
-        const guestForm = document.getElementById('guestlogin') || document.querySelector('form[action*="login.php"][id="guestlogin"]') || document.querySelector('.guestlogin'); // Fallback class check
-
+        const guestForm = document.getElementById('guestlogin') || document.querySelector('form[action*="login.php"][id="guestlogin"]') || document.querySelector('.guestlogin');
         if (guestForm) {
             setHasGuestAccess(true);
         }
 
-        if (containerRef.current) {
-            // 1. Move the Main Form
-            if (originalForm && !containerRef.current.contains(originalForm)) {
-                containerRef.current.appendChild(originalForm);
-            }
+        // 1. Move the Main Form into our specific target slot
+        if (originalForm && formTargetRef.current && !formTargetRef.current.contains(originalForm)) {
+            formTargetRef.current.appendChild(originalForm);
+        }
 
-            // 2. Move OAuth Buttons (Google/Microsoft)
-            if (potentialIdps && !containerRef.current.contains(potentialIdps)) {
-                // Remove the original heading "Log in using your account on:" if it exists, 
-                // because we will add our own cleaner divider.
-                const oldHeading = potentialIdps.querySelector('.login-heading');
-                if (oldHeading) oldHeading.style.display = 'none';
+        // 2. Move OAuth Buttons into our specific target slot
+        if (potentialIdps && idpTargetRef.current && !idpTargetRef.current.contains(potentialIdps)) {
+            // Remove the original heading "Log in using your account on:"
+            const oldHeading = potentialIdps.querySelector('.login-heading');
+            if (oldHeading) oldHeading.style.display = 'none';
 
-                // Add a divider or title if needed
-                const divider = document.createElement('div');
-                divider.className = 'login-divider text-center my-6 text-sm text-[#86868b] font-medium flex items-center gap-4 before:h-px before:flex-1 before:bg-gray-200 after:h-px after:flex-1 after:bg-gray-200';
-                divider.innerText = 'or continue with';
-                containerRef.current.appendChild(divider);
+            // Clean up old dividers we might have added previously to the DOM? 
+            // Better to rely on React rendering the divider.
 
-                containerRef.current.appendChild(potentialIdps);
-            }
+            idpTargetRef.current.appendChild(potentialIdps);
         }
     }, []);
 
@@ -72,21 +61,29 @@ const LoginFormContainer = () => {
                         <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                         Access as a Guest
                     </button>
-                    <div className="text-center my-6 text-sm text-[#86868b] font-medium flex items-center gap-4 before:h-px before:flex-1 before:bg-gray-200 after:h-px after:flex-1 after:bg-gray-200">
-                        or login with credentials
+                    <div className="relative text-center my-6">
+                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
+                        <div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-[#86868b]">or login with credentials</span></div>
                     </div>
                 </div>
             )}
 
-            {/* The Moodle Login Form will appear here */}
-            <div id="react-login-placeholder" className="min-h-[100px] flex items-center justify-center text-gray-400 text-sm">
-                Loading secure login...
-            </div>
+            {/* The Moodle Login Form Slot */}
+            <div ref={formTargetRef} className="width-full"></div>
 
-            <div className="mt-8 text-center">
+            {/* Helper Link */}
+            <div className="mt-4 mb-6 text-center">
                 <a href="/login/forgot_password.php" className="text-sm font-medium text-[#199EDA] hover:underline">
                     Need help accessing your account?
                 </a>
+            </div>
+
+            {/* OAuth Buttons Slot */}
+            <div ref={idpTargetRef} className="width-full">
+                <div className="relative text-center mb-6 mt-2">
+                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
+                    <div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-[#86868b]">or continue with</span></div>
+                </div>
             </div>
             <style>{`
                 /* Overlay styles for the injected form to make it look "Apple" */
