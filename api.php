@@ -1,7 +1,7 @@
 <?php
 
 // Disable Moodle cookies to allow public access without session.
-define('NO_MOODLE_COOKIES', true);
+// define('NO_MOODLE_COOKIES', true); // Commented out to allow session access for file serving verification
 
 // Adjust path to config.php if needed.
 // From theme/boost_child/api.php -> ../../config.php 
@@ -24,17 +24,17 @@ try {
     // In a real scenario, we would join with custom fields.
     // For this POC, we will mock the logic or fetch all visible courses if 'featured' is not strictly implemented via DB yet.
     // Let's assume we look for courses where 'visible' is 1.
-    
+
     // NOTE: To strictly follow "identified by some property", we normally check 'mdl_customfield_data'.
     // For simplicity/robustness in this environment without DB setup, we'll fetch courses and return simulated data 
     // OR try to fetch visible courses.
-    
+
     // Let's implement a real query assuming standard Moodle tables.
     global $DB, $CFG;
-    
+
     // Params
     $tagname = 'featured'; // The tag key to look for
-    
+
     // SQL to fetch courses that have the specific tag
     $sql = "SELECT c.id, c.fullname, c.summary, c.summaryformat
             FROM {course} c
@@ -45,17 +45,17 @@ try {
               AND ti.component = 'core' 
               AND c.visible = 1
             ORDER BY c.sortorder ASC";
-            
+
     require_once($CFG->dirroot . '/course/lib.php');
     require_once($CFG->libdir . '/filelib.php');
 
     $courses_data = $DB->get_records_sql($sql, ['tagname' => $tagname]);
-    
+
     foreach ($courses_data as $course) {
-        
+
         // Handle summary image
-        $imageurl = ''; 
-        
+        $imageurl = '';
+
         // Use core_course_list_element to easily get overview files
         $courseobj = new core_course_list_element($course);
         foreach ($courseobj->get_course_overviewfiles() as $file) {
@@ -69,14 +69,14 @@ try {
                     $file->get_filename()
                 )->out();
                 // Use the first valid image found
-                break; 
+                break;
             }
         }
-        
+
         $response['courses'][] = [
             'id' => $course->id,
             'fullname' => $course->fullname,
-            'summary' => strip_tags($course->summary), 
+            'summary' => strip_tags($course->summary),
             'imageurl' => $imageurl
         ];
     }

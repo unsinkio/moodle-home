@@ -45,7 +45,7 @@ const FeaturedCourses = () => {
     if (courses.length === 0) return null;
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(340px,1fr))] gap-6 lg:gap-8 justify-center">
             {courses.map(course => (
                 <a key={course.id} href={`/course/view.php?id=${course.id}`} className="group block no-underline text-inherit h-full">
                     <div className="relative bg-white rounded-[20px] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.08)] transition-all duration-500 ease-out border border-gray-100 hover:scale-[1.01] h-full flex flex-col">
