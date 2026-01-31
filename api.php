@@ -46,20 +46,37 @@ try {
               AND c.visible = 1
             ORDER BY c.sortorder ASC";
             
-    $courses = $DB->get_records_sql($sql, ['tagname' => $tagname]);
+    require_once($CFG->dirroot . '/course/lib.php');
+    require_once($CFG->libdir . '/filelib.php');
+
+    $courses_data = $DB->get_records_sql($sql, ['tagname' => $tagname]);
     
-    // Fallback: If no courses found with tag, return array empty (controlled by UI)
-    
-    foreach ($courses as $course) {
+    foreach ($courses_data as $course) {
         
-        // Handle summary image if exists (simplified).
+        // Handle summary image
         $imageurl = ''; 
-        // Logic to extract image would go here, or return a placeholder.
+        
+        // Use core_course_list_element to easily get overview files
+        $courseobj = new core_course_list_element($course);
+        foreach ($courseobj->get_course_overviewfiles() as $file) {
+            if ($file->is_valid_image()) {
+                $imageurl = moodle_url::make_pluginfile_url(
+                    $file->get_contextid(),
+                    $file->get_component(),
+                    $file->get_filearea(),
+                    null,
+                    $file->get_filepath(),
+                    $file->get_filename()
+                )->out();
+                // Use the first valid image found
+                break; 
+            }
+        }
         
         $response['courses'][] = [
             'id' => $course->id,
             'fullname' => $course->fullname,
-            'summary' => strip_tags($course->summary), // Strip tags for cleaner JSON
+            'summary' => strip_tags($course->summary), 
             'imageurl' => $imageurl
         ];
     }
