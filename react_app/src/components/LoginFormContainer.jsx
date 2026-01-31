@@ -56,8 +56,10 @@ const LoginFormContainer = () => {
     return (
         <div className="glass-panel login-wrapper flex flex-col justify-center min-h-[500px] p-8" ref={containerRef}>
             <div className="mb-8 text-center">
-                <h2 className="text-3xl font-semibold text-[#1d1d1f] mb-2 tracking-tight">Welcome Back</h2>
-                <p className="text-[#86868b] text-lg">Access your student portal</p>
+                <h2 className="text-2xl lg:text-3xl font-bold text-[#1d1d1f] mb-3 tracking-tight">Access the Learning Community</h2>
+                <p className="text-[#86868b] text-sm leading-relaxed max-w-xs mx-auto">
+                    This platform is reserved for students, faculty, and academic collaborators of Atlantis University.
+                </p>
             </div>
 
             {/* Guest Login Button */}
@@ -79,6 +81,12 @@ const LoginFormContainer = () => {
             {/* The Moodle Login Form will appear here */}
             <div id="react-login-placeholder" className="min-h-[100px] flex items-center justify-center text-gray-400 text-sm">
                 Loading secure login...
+            </div>
+
+            <div className="mt-8 text-center">
+                <a href="/login/forgot_password.php" className="text-sm font-medium text-[#199EDA] hover:underline">
+                    Need help accessing your account?
+                </a>
             </div>
             <style>{`
                 /* Overlay styles for the injected form to make it look "Apple" */

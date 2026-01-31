@@ -18,7 +18,8 @@ const LandingPage = () => {
             <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-12 py-12 lg:py-20 flex flex-col lg:flex-row gap-16 items-start">
 
                 {/* Left Column: Brand & Content */}
-                <div className="flex-1 space-y-12 lg:pt-8">
+                {/* Left Column: Brand & Content */}
+                <div className="flex-1 space-y-20 lg:pt-8 pb-20">
                     <header className="space-y-8 animate-fade-in-up">
                         {/* Brand Logo */}
                         <div className="flex items-center gap-4">
@@ -28,37 +29,80 @@ const LandingPage = () => {
                         </div>
 
                         {/* Heading */}
-                        <div className="space-y-4">
-                            <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-brand-black leading-[1.1]">
-                                Future-Ready <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#199EDA] to-[#0077B5]">Excellence.</span>
+                        <div className="space-y-6">
+                            <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-brand-black leading-[1.05]">
+                                Learning designed for <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#199EDA] to-[#0077B5]">depth, clarity, and relevance.</span>
                             </h1>
                             <p className="text-xl lg:text-2xl text-brand-gray-dark max-w-2xl font-light leading-relaxed">
-                                Empowering your professional journey with world-class education and technology.
+                                Atlantis University advances academic and professional learning through intentional systems that go beyond traditional instructional models.
                             </p>
                         </div>
 
-                        {/* CTA / Badges */}
-                        <div className="flex flex-wrap gap-4 pt-2 text-sm font-semibold text-brand-gray-light">
-                            <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-100">
-                                <span className="w-2 h-2 rounded-full bg-[#E30613]"></span> Live Classes
-                            </span>
-                            <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-100">
-                                <span className="w-2 h-2 rounded-full bg-[#199EDA]"></span> Certified Courses
-                            </span>
+                        {/* CTAs */}
+                        <div className="flex flex-wrap gap-4 pt-4">
+                            <button onClick={() => document.querySelector('.login-wrapper')?.scrollIntoView({ behavior: 'smooth' })} className="px-8 py-4 rounded-full bg-[#199EDA] hover:bg-[#158cc2] text-white font-semibold transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transform hover:-translate-y-px">
+                                Access the Learning Community
+                            </button>
+                            <a href="#courses" className="px-8 py-4 rounded-full bg-white border border-gray-200 hover:bg-gray-50 text-brand-gray-dark font-semibold transition-all hover:border-gray-300">
+                                Explore featured courses
+                            </a>
                         </div>
                     </header>
 
-                    {/* Featured Section */}
+                    {/* LEARNING PHILOSOPHY */}
+                    <section className="animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {[
+                                { title: "Intentional Learning", desc: "Learning paths designed with purpose, coherence, and long-term understanding." },
+                                { title: "Academic Rigor", desc: "Programs grounded in research, critical thinking, and applied knowledge." },
+                                { title: "Modern Pedagogy", desc: "Educational models aligned with contemporary professional and societal realities." }
+                            ].map((item, idx) => (
+                                <div key={idx} className="space-y-3">
+                                    <div className="w-12 h-1 bg-gradient-to-r from-[#199EDA] to-[#E30613] rounded-full mb-4 opacity-80"></div>
+                                    <h3 className="text-lg font-bold text-brand-black">{item.title}</h3>
+                                    <p className="text-brand-gray-dark text-base leading-relaxed">{item.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* NEWS SECTION */}
                     <section className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-2xl font-bold text-brand-black">Academic Updates</h2>
+                        </div>
+                        {/* News Card Example */}
+                        <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+                            <span className="inline-block px-3 py-1 rounded-full bg-blue-50 text-[#199EDA] text-xs font-bold mb-3 uppercase tracking-wider">Spring Term 2026</span>
+                            <h3 className="text-xl font-bold text-brand-black mb-2 group-hover:text-[#199EDA] transition-colors">Enrollment Now Open</h3>
+                            <p className="text-brand-gray-dark text-sm mb-4">January 2026 · Academic Affairs</p>
+                            <div className="text-[#199EDA] font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                                Read update <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Featured Section */}
+                    <section id="courses" className="animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
                         <div className="flex items-center justify-between mb-8">
                             <h2 className="text-2xl font-bold text-brand-black flex items-center gap-3">
                                 <svg className="w-6 h-6 text-[#199EDA]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
-                                Featured Courses
+                                Featured Academic Offerings
                             </h2>
                         </div>
                         <FeaturedCourses />
                     </section>
+
+                    {/* FOOTER (Mobile/Left only? Or global?) we put it here for layout flow */}
+                    <footer className="pt-12 border-t border-gray-100 flex flex-col sm:flex-row justify-between text-sm text-[#86868b]">
+                        <div>Atlantis University ©</div>
+                        <div className="flex gap-4 mt-2 sm:mt-0">
+                            <span>Academic Policies</span>
+                            <span>Privacy</span>
+                            <span>Support</span>
+                        </div>
+                    </footer>
                 </div>
 
                 {/* Right Column: Login (Sticky) */}
