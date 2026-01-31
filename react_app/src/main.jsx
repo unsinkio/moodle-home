@@ -40,10 +40,45 @@ if (validPageIds.includes(bodyId) && isNotLoggedIn) {
         document.body.classList.add('react-landing-active');
     }
 
+    class ErrorBoundary extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = { hasError: false, error: null, errorInfo: null };
+        }
+
+        static getDerivedStateFromError(error) {
+            return { hasError: true };
+        }
+
+        componentDidCatch(error, errorInfo) {
+            this.setState({ error, errorInfo });
+            console.error("React Crash:", error, errorInfo);
+        }
+
+        render() {
+            if (this.state.hasError) {
+                return (
+                    <div style={{ padding: '2rem', background: '#fee2e2', color: '#991b1b', border: '2px solid #ef4444', borderRadius: '1rem', margin: '2rem', zIndex: 99999, position: 'relative' }}>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>Something went wrong.</h2>
+                        <details style={{ whiteSpace: 'pre-wrap' }}>
+                            {this.state.error && this.state.error.toString()}
+                            <br />
+                            {this.state.errorInfo && this.state.errorInfo.componentStack}
+                        </details>
+                    </div>
+                );
+            }
+
+            return this.props.children;
+        }
+    }
+
     if (rootElement) {
         ReactDOM.createRoot(rootElement).render(
             <React.StrictMode>
-                <LandingPage />
+                <ErrorBoundary>
+                    <LandingPage />
+                </ErrorBoundary>
             </React.StrictMode>,
         )
     }
