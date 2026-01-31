@@ -22,7 +22,7 @@ const LandingPage = () => {
                     <header className="space-y-8 animate-fade-in-up">
                         {/* Brand Logo */}
                         <div className="flex items-center gap-4">
-                            <img src="/logo.png" alt="Atlantis University" className="h-12 lg:h-14 w-auto object-contain" />
+                            <img src="/theme/boost_child/pix/logo.png" alt="Atlantis University" className="h-12 lg:h-14 w-auto object-contain" />
                             <div className="h-8 w-px bg-gray-300 mx-2 hidden sm:block"></div>
                             <span className="text-brand-gray-dark font-medium tracking-wide hidden sm:block text-sm uppercase">Learning Community</span>
                         </div>
@@ -44,7 +44,7 @@ const LandingPage = () => {
                                 <span className="w-2 h-2 rounded-full bg-[#E30613]"></span> Live Classes
                             </span>
                             <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-100">
-                                <span className="w-2 h-2 rounded-full bg-[#199EDA]"></span> Certified Programs
+                                <span className="w-2 h-2 rounded-full bg-[#199EDA]"></span> Certified Courses
                             </span>
                         </div>
                     </header>
@@ -54,7 +54,7 @@ const LandingPage = () => {
                         <div className="flex items-center justify-between mb-8">
                             <h2 className="text-2xl font-bold text-brand-black flex items-center gap-3">
                                 <svg className="w-6 h-6 text-[#199EDA]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
-                                Featured Programs
+                                Featured Courses
                             </h2>
                         </div>
                         <FeaturedCourses />
