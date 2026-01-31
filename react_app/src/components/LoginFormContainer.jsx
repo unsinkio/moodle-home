@@ -3,6 +3,8 @@ import React, { useEffect, useRef } from 'react';
 const LoginFormContainer = () => {
     const containerRef = useRef(null);
 
+    const [hasGuestAccess, setHasGuestAccess] = React.useState(false);
+
     useEffect(() => {
         // Find the original Moodle login form
         // Moodle 4.x usually has a login container with class 'login-container' or id 'page-login-index' context
@@ -11,6 +13,12 @@ const LoginFormContainer = () => {
         const originalForm = document.querySelector('.login-form') || document.querySelector('#login') || document.querySelector('form[action*="login.php"]');
         // Standard Moodle 4.x IDP container, or the specific one user has
         const potentialIdps = document.querySelector('.potential-idps') || document.querySelector('.login-identityproviders');
+
+        // Guest Access Check
+        const guestForm = document.getElementById('guestlogin');
+        if (guestForm) {
+            setHasGuestAccess(true);
+        }
 
         if (containerRef.current) {
             // 1. Move the Main Form
@@ -36,12 +44,35 @@ const LoginFormContainer = () => {
         }
     }, []);
 
+    const handleGuestLogin = () => {
+        const guestForm = document.getElementById('guestlogin');
+        if (guestForm) {
+            guestForm.submit();
+        }
+    };
+
     return (
         <div className="glass-panel login-wrapper flex flex-col justify-center min-h-[500px] p-8" ref={containerRef}>
             <div className="mb-8 text-center">
                 <h2 className="text-3xl font-semibold text-[#1d1d1f] mb-2 tracking-tight">Welcome Back</h2>
                 <p className="text-[#86868b] text-lg">Access your student portal</p>
             </div>
+
+            {/* Guest Login Button */}
+            {hasGuestAccess && (
+                <div className="mb-6">
+                    <button
+                        onClick={handleGuestLogin}
+                        className="w-full py-4 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#1d1d1f] font-semibold transition-colors flex items-center justify-center gap-2"
+                    >
+                        <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                        Access as a Guest
+                    </button>
+                    <div className="text-center my-6 text-sm text-[#86868b] font-medium flex items-center gap-4 before:h-px before:flex-1 before:bg-gray-200 after:h-px after:flex-1 after:bg-gray-200">
+                        or login with credentials
+                    </div>
+                </div>
+            )}
 
             {/* The Moodle Login Form will appear here */}
             <div id="react-login-placeholder" className="min-h-[100px] flex items-center justify-center text-gray-400 text-sm">
