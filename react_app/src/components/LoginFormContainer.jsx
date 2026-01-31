@@ -15,9 +15,20 @@ const LoginFormContainer = () => {
         const potentialIdps = document.querySelector('.potential-idps') || document.querySelector('.login-identityproviders');
 
         // Guest Access Check
-        const guestForm = document.getElementById('guestlogin');
+        // Try multiple selectors
+        const guestForm = document.getElementById('guestlogin') || document.querySelector('form[action*="login.php"][id="guestlogin"]') || document.querySelector('.guestlogin'); // Fallback class check
+
+        console.log('React Login Debug: Checking for guest form...', {
+            foundById: !!document.getElementById('guestlogin'),
+            foundBySelector: !!guestForm,
+            allForms: document.querySelectorAll('form').length
+        });
+
         if (guestForm) {
+            console.log('React Login Debug: Guest form found!');
             setHasGuestAccess(true);
+        } else {
+            console.log('React Login Debug: Guest form NOT found.');
         }
 
         if (containerRef.current) {
