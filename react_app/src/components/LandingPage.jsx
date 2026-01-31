@@ -15,17 +15,16 @@ const LandingPage = () => {
                 {/* Left Column: Content & Courses */}
                 <div className="flex-1 space-y-16">
                     <header className="space-y-6 animate-fade-in-up">
-                        {/* Optional: Add Logo here if not in Navbar */}
-                        <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-8">
-                            {/* Placeholder for AU Logo Icon if needed, or just keep text */}
-                            <span className="text-[#CC0000] font-bold text-3xl">A</span>
+                        {/* Logo from public/logo.png */}
+                        <div className="mb-8">
+                            <img src="/logo.png" alt="Logo" className="h-16 w-auto object-contain" />
                         </div>
 
                         <h1 className="text-6xl lg:text-7xl font-semibold tracking-tight text-[#1d1d1f] leading-tight">
-                            Learn without <span className="text-[#0055AA]">limits.</span>
+                            Learn without <span className="text-brand-primary">limits.</span>
                         </h1>
                         <p className="text-2xl text-[#86868b] max-w-2xl font-light leading-relaxed">
-                            Discover a world of knowledge with Atlantis University's premium courses.
+                            Discover a world of knowledge with our premium courses.
                             Start your journey today.
                         </p>
                     </header>
