@@ -4,18 +4,10 @@ const LoginFormContainer = () => {
     const formTargetRef = useRef(null);
     const idpTargetRef = useRef(null);
 
-    const [hasGuestAccess, setHasGuestAccess] = React.useState(false);
-
     useEffect(() => {
         // Find the original Moodle login form
         const originalForm = document.querySelector('.login-form') || document.querySelector('#login') || document.querySelector('form[action*="login.php"]');
         const potentialIdps = document.querySelector('.potential-idps') || document.querySelector('.login-identityproviders');
-
-        // Guest Access Check
-        const guestForm = document.getElementById('guestlogin') || document.querySelector('form[action*="login.php"][id="guestlogin"]') || document.querySelector('.guestlogin');
-        if (guestForm) {
-            setHasGuestAccess(true);
-        }
 
         // 1. Move the Main Form into our specific target slot
         if (originalForm && formTargetRef.current && !formTargetRef.current.contains(originalForm)) {
@@ -28,61 +20,34 @@ const LoginFormContainer = () => {
             const oldHeading = potentialIdps.querySelector('.login-heading');
             if (oldHeading) oldHeading.style.display = 'none';
 
-            // Clean up old dividers we might have added previously to the DOM? 
-            // Better to rely on React rendering the divider.
-
             idpTargetRef.current.appendChild(potentialIdps);
         }
     }, []);
 
-    const handleGuestLogin = () => {
-        const guestForm = document.getElementById('guestlogin');
-        if (guestForm) {
-            guestForm.submit();
-        }
-    };
-
     return (
-        <div className="glass-panel login-wrapper flex flex-col justify-center min-h-[500px] p-8">
-            <div className="mb-8 text-center">
-                <h2 className="text-2xl lg:text-3xl font-bold text-[#1d1d1f] mb-3 tracking-tight">Access the Learning Community</h2>
-                <p className="text-[#86868b] text-sm leading-relaxed max-w-xs mx-auto">
-                    This platform is reserved for students, faculty, and academic collaborators of Atlantis University.
+        <div className="glass-panel login-wrapper flex flex-col justify-center p-6 md:p-8">
+            <div className="mb-6 text-center">
+                <h2 className="text-xl lg:text-2xl font-bold text-[#1d1d1f] mb-2 tracking-tight">Access the Learning Community</h2>
+                <p className="text-[#86868b] text-xs leading-relaxed max-w-[280px] mx-auto">
+                    Reserved for students, faculty, and academic collaborators.
                 </p>
             </div>
 
-            {/* Guest Login Button */}
-            {hasGuestAccess && (
-                <div className="mb-6">
-                    <button
-                        onClick={handleGuestLogin}
-                        className="w-full py-3.5 rounded-xl bg-white border border-[#e5e5e5] hover:bg-[#fbfbfd] text-[#1d1d1f] font-medium transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-3 transform hover:-translate-y-px"
-                    >
-                        <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                        Access as a Guest
-                    </button>
-                    <div className="relative text-center my-6">
-                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
-                        <div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-[#86868b]">or login with credentials</span></div>
-                    </div>
-                </div>
-            )}
-
             {/* The Moodle Login Form Slot */}
-            <div ref={formTargetRef} className="width-full"></div>
+            <div ref={formTargetRef} className="w-full"></div>
 
             {/* Helper Link */}
             <div className="mt-4 mb-6 text-center">
-                <a href="/login/forgot_password.php" className="text-sm font-medium text-[#199EDA] hover:underline">
+                <a href="/login/forgot_password.php" className="text-xs font-medium text-[#199EDA] hover:underline">
                     Need help accessing your account?
                 </a>
             </div>
 
             {/* OAuth Buttons Slot */}
-            <div ref={idpTargetRef} className="width-full">
-                <div className="relative text-center mb-6 mt-2">
+            <div ref={idpTargetRef} className="w-full">
+                <div className="relative text-center mb-4 mt-2">
                     <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
-                    <div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-[#86868b]">or continue with</span></div>
+                    <div className="relative flex justify-center text-xs"><span className="px-2 bg-white text-[#86868b]">or continue with</span></div>
                 </div>
             </div>
             <style>{`
