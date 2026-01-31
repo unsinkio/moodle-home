@@ -43,7 +43,7 @@ const LoginFormContainer = () => {
     };
 
     return (
-        <div className="glass-panel login-wrapper flex flex-col justify-center min-h-[500px] p-8" ref={containerRef}>
+        <div className="glass-panel login-wrapper flex flex-col justify-center min-h-[500px] p-8">
             <div className="mb-8 text-center">
                 <h2 className="text-2xl lg:text-3xl font-bold text-[#1d1d1f] mb-3 tracking-tight">Access the Learning Community</h2>
                 <p className="text-[#86868b] text-sm leading-relaxed max-w-xs mx-auto">
