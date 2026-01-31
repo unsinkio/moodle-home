@@ -10,8 +10,11 @@ export default {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
             },
             colors: {
-                'brand-primary': '#0056b3', // Placeholder Blue from logo
-                'brand-secondary': '#e5e5e5', // Placeholder Gray from logo
+                'brand-primary': '#199EDA', // Tech Blue
+                'brand-secondary': '#E30613', // Energetic Red
+                'brand-gray-light': '#A2A2A1',
+                'brand-gray-dark': '#535158',
+                'brand-black': '#000000',
             },
         },
     },
