@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+react_app/dist/
+*.zip
+
+# System
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/

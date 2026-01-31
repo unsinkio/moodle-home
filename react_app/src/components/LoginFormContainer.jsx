@@ -65,7 +65,7 @@ const LoginFormContainer = () => {
                 <div className="mb-6">
                     <button
                         onClick={handleGuestLogin}
-                        className="w-full py-4 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#1d1d1f] font-semibold transition-colors flex items-center justify-center gap-2"
+                        className="w-full py-3.5 rounded-xl bg-white border border-[#e5e5e5] hover:bg-[#fbfbfd] text-[#1d1d1f] font-medium transition-all shadow-[0_2px_4px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] flex items-center justify-center gap-3 transform hover:-translate-y-px"
                     >
                         <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                         Access as a Guest
