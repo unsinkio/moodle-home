@@ -5,23 +5,60 @@ const LoginFormContainer = () => {
     const idpTargetRef = useRef(null);
 
     useEffect(() => {
-        // Find the original Moodle login form
-        const originalForm = document.querySelector('.login-form') || document.querySelector('#login') || document.querySelector('form[action*="login.php"]');
-        const potentialIdps = document.querySelector('.potential-idps') || document.querySelector('.login-identityproviders');
+        let attempts = 0;
+        const maxAttempts = 10;
 
-        // 1. Move the Main Form into our specific target slot
-        if (originalForm && formTargetRef.current && !formTargetRef.current.contains(originalForm)) {
-            formTargetRef.current.appendChild(originalForm);
-        }
+        const findAndMoveForm = () => {
+            // Find the original Moodle login form
+            // Try explicit ID first, then class, then generic action
+            const originalForm = document.getElementById('login') || document.querySelector('.login-form') || document.querySelector('form[action*="login.php"]');
+            const potentialIdps = document.querySelector('.potential-idps') || document.querySelector('.login-identityproviders');
 
-        // 2. Move OAuth Buttons into our specific target slot
-        if (potentialIdps && idpTargetRef.current && !idpTargetRef.current.contains(potentialIdps)) {
-            // Remove the original heading "Log in using your account on:"
-            const oldHeading = potentialIdps.querySelector('.login-heading');
-            if (oldHeading) oldHeading.style.display = 'none';
+            let formMoved = false;
 
-            idpTargetRef.current.appendChild(potentialIdps);
-        }
+            // 1. Move the Main Form into our specific target slot
+            if (originalForm && formTargetRef.current) {
+                if (!formTargetRef.current.contains(originalForm)) {
+                    formTargetRef.current.appendChild(originalForm);
+                    // Ensure it's visible
+                    originalForm.style.display = 'block';
+                }
+                formMoved = true;
+            }
+
+            // 2. Move OAuth Buttons into our specific target slot
+            if (potentialIdps && idpTargetRef.current && !idpTargetRef.current.contains(potentialIdps)) {
+                // Remove the original heading "Log in using your account on:"
+                const oldHeading = potentialIdps.querySelector('.login-heading');
+                if (oldHeading) oldHeading.style.display = 'none';
+
+                idpTargetRef.current.appendChild(potentialIdps);
+            }
+
+            // Retry if form not found yet
+            if (!formMoved && attempts < maxAttempts) {
+                attempts++;
+                setTimeout(findAndMoveForm, 200);
+            } else if (!formMoved && attempts >= maxAttempts) {
+                // FALLBACK: If form never found (e.g. strict landing page without login block), show a manual link
+                if (formTargetRef.current) {
+                    // Check if we already added the fallback
+                    if (!formTargetRef.current.querySelector('.fallback-login-btn')) {
+                        const fallbackBtn = document.createElement('a');
+                        fallbackBtn.href = '/login/index.php';
+                        fallbackBtn.className = 'btn btn-primary fallback-login-btn';
+                        fallbackBtn.innerText = 'Log In (Direct)';
+                        fallbackBtn.style.display = 'block';
+                        fallbackBtn.style.width = '100%';
+                        fallbackBtn.style.textAlign = 'center';
+                        fallbackBtn.style.marginTop = '20px';
+                        formTargetRef.current.appendChild(fallbackBtn);
+                    }
+                }
+            }
+        };
+
+        findAndMoveForm();
     }, []);
 
     return (
