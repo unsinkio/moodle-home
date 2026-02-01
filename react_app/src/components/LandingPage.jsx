@@ -8,10 +8,14 @@ const LandingPage = () => {
 
     // Fetch Site Info (Logos)
     const [siteInfo, setSiteInfo] = React.useState(null);
+    const [baseUrl, setBaseUrl] = React.useState('');
 
     React.useEffect(() => {
-        const baseUrl = (window.M && window.M.cfg && window.M.cfg.wwwroot) ? window.M.cfg.wwwroot : '';
-        const apiUrl = `${baseUrl}/theme/boost_child/api.php?featured=1`;
+        const root = (window.M && window.M.cfg && window.M.cfg.wwwroot) ? window.M.cfg.wwwroot : '';
+        setBaseUrl(root);
+
+        // Use the root to construct the API URL so it works from any sub-page
+        const apiUrl = `${root}/theme/boost_child/api.php?featured=1`;
 
         fetch(apiUrl)
             .then(res => res.json())
@@ -33,7 +37,9 @@ const LandingPage = () => {
             .catch(err => console.error("Failed to load site info", err));
     }, []);
 
-    const logoSrc = (siteInfo && siteInfo.logo) ? siteInfo.logo : "/theme/boost_child/pix/logo.png";
+    // Robust Fallback: Use the absolute base URL if available to find the local theme file
+    const fallbackLogo = baseUrl ? `${baseUrl}/theme/boost_child/pix/logo.png` : "/theme/boost_child/pix/logo.png";
+    const logoSrc = (siteInfo && siteInfo.logo) ? siteInfo.logo : fallbackLogo;
 
     return (
         <div className="landing-page min-h-screen bg-white text-[#1d1d1f] font-sans selection:bg-[#E30613] selection:text-white overflow-x-hidden">
