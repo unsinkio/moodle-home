@@ -78,18 +78,63 @@ const LandingPage = () => {
                 if (pNodes.length > 1) h2Text = pNodes[1].textContent;
             }
 
+            // Strategy: Look for List Items (UL) for Pillars
+            const ulNode = doc.querySelector('ul');
+            const parsedPillars = [];
+            if (ulNode) {
+                const lis = ulNode.querySelectorAll('li');
+                lis.forEach(li => {
+                    // Expect format: <strong>Title</strong> Description
+                    // OR Just Title if that's all there is
+                    let title = "";
+                    let desc = "";
+
+                    const strong = li.querySelector('strong') || li.querySelector('b');
+                    if (strong) {
+                        title = strong.textContent.trim();
+                        // Description is the text content excluding the strong tag? 
+                        // Or just render the whole LI without the strong tag?
+                        // Simple approach: clone, remove strong, get text
+                        const clone = li.cloneNode(true);
+                        const s = clone.querySelector('strong') || clone.querySelector('b');
+                        if (s) s.remove();
+                        desc = clone.textContent.trim().replace(/^:\s*/, ''); // Remove leading colon if present
+                    } else {
+                        // If no bold, maybe split by colon?
+                        const parts = li.textContent.split(':');
+                        if (parts.length > 1) {
+                            title = parts[0].trim();
+                            desc = parts.slice(1).join(':').trim();
+                        } else {
+                            title = li.textContent.trim();
+                        }
+                    }
+                    if (title) parsedPillars.push({ title, desc });
+                });
+            }
+
             return {
                 h1: h1Text.trim() || defaultH1,
-                h2: h2Text.trim() || defaultH2
+                h2: h2Text.trim() || defaultH2,
+                pillars: parsedPillars.length > 0 ? parsedPillars : null
             };
 
         } catch (e) {
             console.error("Error parsing hero content", e);
-            return { h1: defaultH1, h2: defaultH2 };
+            return { h1: defaultH1, h2: defaultH2, pillars: null };
         }
     };
 
     const heroContent = getHeroContent();
+
+    // Default Pillars if none found in Moodle
+    const defaultPillars = [
+        { title: "Intentional Learning", desc: "Learning paths designed with purpose, coherence, and long-term understanding." },
+        { title: "Academic Rigor", desc: "Programs grounded in research, critical thinking, and applied knowledge." },
+        { title: "Modern Pedagogy", desc: "Educational models aligned with contemporary professional and societal realities." }
+    ];
+
+    const displayPillars = heroContent.pillars || defaultPillars;
 
     return (
         <div className="landing-page min-h-screen bg-white text-[#1d1d1f] font-sans selection:bg-[#E30613] selection:text-white overflow-x-hidden">
@@ -148,11 +193,7 @@ const LandingPage = () => {
                     {/* LEARNING PHILOSOPHY */}
                     <section className="animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            {[
-                                { title: "Intentional Learning", desc: "Learning paths designed with purpose, coherence, and long-term understanding." },
-                                { title: "Academic Rigor", desc: "Programs grounded in research, critical thinking, and applied knowledge." },
-                                { title: "Modern Pedagogy", desc: "Educational models aligned with contemporary professional and societal realities." }
-                            ].map((item, idx) => (
+                            {displayPillars.map((item, idx) => (
                                 <div key={idx} className="space-y-3">
                                     <div className="w-12 h-1 bg-gradient-to-r from-[#199EDA] to-[#E30613] rounded-full mb-4 opacity-80"></div>
                                     <h3 className="text-lg font-bold text-brand-black">{item.title}</h3>
