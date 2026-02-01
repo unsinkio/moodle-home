@@ -171,11 +171,16 @@ Error generating stack: `+o.message+`
                         0 1px 2px rgba(0,0,0,0.02);
                 }
                 /* 4. HERO RICH TEXT STYLING */
-                .hero-title strong, .hero-title b {
+                .hero-title strong, 
+                .hero-title b, 
+                .hero-title span[style*="bold"], 
+                .hero-title span[style*="700"] {
                     color: transparent;
                     background-clip: text;
                     -webkit-background-clip: text;
-                    background-image: linear-gradient(to right, #199EDA, #0077B5);
-                    font-weight: 800; /* Extra bold for emphasis */
+                    /* Logo Colors Gradient: Blue (#199EDA) -> Red (#E30613) */
+                    background-image: linear-gradient(135deg, #199EDA 0%, #E30613 100%);
+                    font-weight: 800 !important;
+                    display: inline-block; /* Sometimes needed for background-clip on spans */
                 }
             `})]})},If=["page-login-index","page-site-index"],Of=document.body.id,Ff=document.body.classList.contains("notloggedin");if(If.includes(Of)&&Ff){let e=document.getElementById("react-landing-page-root");e||(e=document.createElement("div"),e.id="react-landing-page-root",document.body.prepend(e),document.body.classList.add("react-landing-active"));class t extends sn.Component{constructor(r){super(r),this.state={hasError:!1,error:null,errorInfo:null}}static getDerivedStateFromError(r){return{hasError:!0}}componentDidCatch(r,l){this.setState({error:r,errorInfo:l}),console.error("React Crash:",r,l)}render(){return this.state.hasError?y.jsxs("div",{style:{padding:"2rem",background:"#fee2e2",color:"#991b1b",border:"2px solid #ef4444",borderRadius:"1rem",margin:"2rem",zIndex:99999,position:"relative"},children:[y.jsx("h2",{style:{fontSize:"1.5rem",fontWeight:"bold",marginBottom:"1rem"},children:"Something went wrong."}),y.jsxs("details",{style:{whiteSpace:"pre-wrap"},children:[this.state.error&&this.state.error.toString(),y.jsx("br",{}),this.state.errorInfo&&this.state.errorInfo.componentStack]})]}):this.props.children}}e&&Sl.createRoot(e).render(y.jsx(sn.StrictMode,{children:y.jsx(t,{children:y.jsx(Df,{})})}))}})();
