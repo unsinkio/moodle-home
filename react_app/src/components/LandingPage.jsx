@@ -57,7 +57,15 @@ const LandingPage = () => {
                     <header className="space-y-8 animate-fade-in-up">
                         {/* Brand Logo */}
                         <div className="flex items-center gap-4">
-                            <img src={logoSrc} alt="Atlantis University" className="h-12 lg:h-14 w-auto object-contain" />
+                            <img
+                                src={logoSrc}
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = "/theme/boost_child/pix/logo.png";
+                                }}
+                                alt="Atlantis University"
+                                className="h-12 lg:h-14 w-auto object-contain"
+                            />
                             <div className="h-8 w-px bg-gray-300 mx-2 hidden sm:block"></div>
                             <span className="text-brand-gray-dark font-medium tracking-wide hidden sm:block text-sm uppercase">Learning Community</span>
                         </div>
