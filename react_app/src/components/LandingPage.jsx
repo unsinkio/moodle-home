@@ -245,12 +245,17 @@ const LandingPage = () => {
                         0 1px 2px rgba(0,0,0,0.02);
                 }
                 /* 4. HERO RICH TEXT STYLING */
-                .hero-title strong, .hero-title b {
+                .hero-title strong, 
+                .hero-title b, 
+                .hero-title span[style*="bold"], 
+                .hero-title span[style*="700"] {
                     color: transparent;
                     background-clip: text;
                     -webkit-background-clip: text;
-                    background-image: linear-gradient(to right, #199EDA, #0077B5);
-                    font-weight: 800; /* Extra bold for emphasis */
+                    /* Logo Colors Gradient: Blue (#199EDA) -> Red (#E30613) */
+                    background-image: linear-gradient(135deg, #199EDA 0%, #E30613 100%);
+                    font-weight: 800 !important;
+                    display: inline-block; /* Sometimes needed for background-clip on spans */
                 }
             `}</style>
         </div>
