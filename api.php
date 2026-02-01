@@ -48,6 +48,10 @@ try {
         return '';
     }
 
+    $site = get_site();
+    $response['site']['fullname'] = $site->fullname;
+    $response['site']['summary'] = format_text($site->summary, $site->summaryformat);
+
     $response['site']['logo'] = get_logo_data_from_config('logo');
     $response['site']['logocompact'] = get_logo_data_from_config('logocompact');
     $response['site']['favicon'] = get_logo_data_from_config('favicon');
