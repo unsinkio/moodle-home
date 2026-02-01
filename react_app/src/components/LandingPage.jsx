@@ -6,6 +6,35 @@ const LandingPage = () => {
     // Tech-Pro Aesthetic: Clean, sharp, minimalist.
     // Colors: #199EDA (Blue), #E30613 (Red), #535158 (Dark Gray)
 
+    // Fetch Site Info (Logos)
+    const [siteInfo, setSiteInfo] = React.useState(null);
+
+    React.useEffect(() => {
+        const baseUrl = (window.M && window.M.cfg && window.M.cfg.wwwroot) ? window.M.cfg.wwwroot : '';
+        const apiUrl = `${baseUrl}/theme/boost_child/api.php?featured=1`;
+
+        fetch(apiUrl)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success' && data.site) {
+                    setSiteInfo(data.site);
+                    // Also set favicon dynamically if desired
+                    if (data.site.favicon) {
+                        let link = document.querySelector("link[rel~='icon']");
+                        if (!link) {
+                            link = document.createElement('link');
+                            link.rel = 'icon';
+                            document.getElementsByTagName('head')[0].appendChild(link);
+                        }
+                        link.href = data.site.favicon;
+                    }
+                }
+            })
+            .catch(err => console.error("Failed to load site info", err));
+    }, []);
+
+    const logoSrc = (siteInfo && siteInfo.logo) ? siteInfo.logo : "/theme/boost_child/pix/logo.png";
+
     return (
         <div className="landing-page min-h-screen bg-white text-[#1d1d1f] font-sans selection:bg-[#E30613] selection:text-white overflow-x-hidden">
             {/* Background Elements */}
@@ -18,12 +47,11 @@ const LandingPage = () => {
             <div className="relative z-10 max-w-[1440px] mx-auto px-6 lg:px-12 py-12 lg:py-20 flex flex-col lg:flex-row gap-16 items-start">
 
                 {/* Left Column: Brand & Content */}
-                {/* Left Column: Brand & Content */}
                 <div className="flex-1 space-y-20 lg:pt-8 pb-20">
                     <header className="space-y-8 animate-fade-in-up">
                         {/* Brand Logo */}
                         <div className="flex items-center gap-4">
-                            <img src="/theme/boost_child/pix/logo.png" alt="Atlantis University" className="h-12 lg:h-14 w-auto object-contain" />
+                            <img src={logoSrc} alt="Atlantis University" className="h-12 lg:h-14 w-auto object-contain" />
                             <div className="h-8 w-px bg-gray-300 mx-2 hidden sm:block"></div>
                             <span className="text-brand-gray-dark font-medium tracking-wide hidden sm:block text-sm uppercase">Learning Community</span>
                         </div>

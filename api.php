@@ -16,10 +16,40 @@ $featured = optional_param('featured', 0, PARAM_BOOL);
 
 $response = [
     'status' => 'success',
+    'site' => [
+        'logo' => '',
+        'logocompact' => '',
+        'favicon' => ''
+    ],
     'courses' => []
 ];
 
 try {
+    global $DB, $CFG;
+
+    // Helper to get logo URL
+    function get_logo_url_from_config($name)
+    {
+        $fs = get_file_storage();
+        $files = $fs->get_area_files(context_system::instance()->id, 'core_admin', $name, 0, 'itemid, filepath, filename', false);
+        if ($files) {
+            $file = reset($files);
+            return moodle_url::make_pluginfile_url(
+                $file->get_contextid(),
+                $file->get_component(),
+                $file->get_filearea(),
+                $file->get_itemid(),
+                $file->get_filepath(),
+                $file->get_filename()
+            )->out();
+        }
+        return '';
+    }
+
+    $response['site']['logo'] = get_logo_url_from_config('logo');
+    $response['site']['logocompact'] = get_logo_url_from_config('logocompact');
+    $response['site']['favicon'] = get_logo_url_from_config('favicon');
+
     // Basic query to fetch courses.
     // In a real scenario, we would join with custom fields.
     // For this POC, we will mock the logic or fetch all visible courses if 'featured' is not strictly implemented via DB yet.
