@@ -41,6 +41,59 @@ const LandingPage = () => {
     const fallbackLogo = baseUrl ? `${baseUrl}/theme/boost_child/pix/logo.png` : "/theme/boost_child/pix/logo.png";
     const logoSrc = (siteInfo && siteInfo.logo) ? siteInfo.logo : fallbackLogo;
 
+    // Helper to parse Moodle Summary HTML
+    const getHeroContent = () => {
+        const defaultH1 = "Learning designed for depth, clarity, and relevance.";
+        const defaultH2 = "Atlantis University advances academic and professional learning through intentional systems that go beyond traditional instructional models.";
+
+        if (!siteInfo || !siteInfo.summary) {
+            return { h1: defaultH1, h2: defaultH2 };
+        }
+
+        try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(siteInfo.summary, 'text/html');
+
+            // User convention: First sentence (H1/Heading Large), Second (H2/Heading Medium)
+            // We try to find actual H tags first, or just first/second blocks
+
+            let h1Text = "";
+            let h2Text = "";
+
+            // Strategy: Look for Headers specifically
+            const h1Node = doc.querySelector('h1') || doc.querySelector('h3'); // Moodle 'Large' often H3 if H1 reserved
+            const h2Node = doc.querySelector('h2') || doc.querySelector('h4'); // Moodle 'Medium' often H4
+
+            if (h1Node) {
+                h1Text = h1Node.textContent;
+                // If we found H1, try to find H2 that is NOT the same node
+                if (h2Node && h2Node !== h1Node) {
+                    h2Text = h2Node.textContent;
+                } else {
+                    // If no explicit H2, maybe the next sibling generic tag?
+                    // basic fallback: just use the rest of the text? 
+                    // Let's stick to user prompt: "The first sentence in Heading Large, second in Heading Medium"
+                }
+            } else {
+                // If no headers found, maybe just paragraphs?
+                const pNodes = doc.querySelectorAll('p');
+                if (pNodes.length > 0) h1Text = pNodes[0].textContent;
+                if (pNodes.length > 1) h2Text = pNodes[1].textContent;
+            }
+
+            return {
+                h1: h1Text.trim() || defaultH1,
+                h2: h2Text.trim() || defaultH2
+            };
+
+        } catch (e) {
+            console.error("Error parsing hero content", e);
+            return { h1: defaultH1, h2: defaultH2 };
+        }
+    };
+
+    const heroContent = getHeroContent();
+
     return (
         <div className="landing-page min-h-screen bg-white text-[#1d1d1f] font-sans selection:bg-[#E30613] selection:text-white overflow-x-hidden">
             {/* Background Elements */}
@@ -63,21 +116,28 @@ const LandingPage = () => {
                                     e.target.onerror = null;
                                     e.target.src = "/theme/boost_child/pix/logo.png";
                                 }}
-                                alt="Atlantis University"
+                                alt={siteInfo?.fullname || "Atlantis University"}
                                 className="h-12 lg:h-14 w-auto object-contain"
                             />
                             <div className="h-8 w-px bg-gray-300 mx-2 hidden sm:block"></div>
-                            <span className="text-brand-gray-dark font-medium tracking-wide hidden sm:block text-sm uppercase">Learning Community</span>
+                            <span className="text-brand-gray-dark font-medium tracking-wide hidden sm:block text-sm uppercase">
+                                {siteInfo?.fullname || "Learning Community"}
+                            </span>
                         </div>
 
                         {/* Heading */}
                         <div className="space-y-6">
+                            {/* We maintain the styling but inject dynamic text. 
+                                We might lose the specific gradient split "depth, clarity..." unless we robustly detect it.
+                                For now, we apply the main text style. If the user wants the gradient, 
+                                we can apply it to the whole text or just render it standard brand-black.
+                                Let's apply a subtle gradient to the whole H1 to look premium.
+                            */}
                             <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-brand-black leading-[1.05]">
-                                Learning designed for <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#199EDA] to-[#0077B5]">depth, clarity, and relevance.</span>
+                                {heroContent.h1}
                             </h1>
                             <p className="text-xl lg:text-2xl text-brand-gray-dark max-w-2xl font-light leading-relaxed">
-                                Atlantis University advances academic and professional learning through intentional systems that go beyond traditional instructional models.
+                                {heroContent.h2}
                             </p>
                         </div>
 
