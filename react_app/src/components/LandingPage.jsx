@@ -249,13 +249,20 @@ const LandingPage = () => {
                 .hero-title b, 
                 .hero-title span[style*="bold"], 
                 .hero-title span[style*="700"] {
-                    color: transparent;
-                    background-clip: text;
-                    -webkit-background-clip: text;
+                    color: transparent !important; /* Fallback */
+                    -webkit-text-fill-color: transparent !important; /* Critical for Safari/Chrome */
+                    
+                    background-clip: text !important;
+                    -webkit-background-clip: text !important;
+                    
                     /* Logo Colors Gradient: Blue (#199EDA) -> Red (#E30613) */
                     background-image: linear-gradient(135deg, #199EDA 0%, #E30613 100%);
+                    
                     font-weight: 800 !important;
-                    display: inline-block; /* Sometimes needed for background-clip on spans */
+                    
+                    /* Ensure gradient wraps correctly across lines */
+                    -webkit-box-decoration-break: clone;
+                    box-decoration-break: clone;
                 }
             `}</style>
         </div>
