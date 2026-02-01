@@ -27,28 +27,30 @@ $response = [
 try {
     global $DB, $CFG;
 
-    // Helper to get logo URL
-    function get_logo_url_from_config($name)
+    // Helper to get logo content as Base64 to avoid pluginfile permission issues
+    function get_logo_data_from_config($name)
     {
         $fs = get_file_storage();
+        // Get files, excluding directories
         $files = $fs->get_area_files(context_system::instance()->id, 'core_admin', $name, 0, 'itemid, filepath, filename', false);
         if ($files) {
+            // Get the first file found (usually there is only one logo)
             $file = reset($files);
-            return moodle_url::make_pluginfile_url(
-                $file->get_contextid(),
-                $file->get_component(),
-                $file->get_filearea(),
-                $file->get_itemid(),
-                $file->get_filepath(),
-                $file->get_filename()
-            )->out();
+
+            // Read content
+            $content = $file->get_content();
+            $mimetype = $file->get_mimetype();
+
+            // Encode
+            $base64 = base64_encode($content);
+            return 'data:' . $mimetype . ';base64,' . $base64;
         }
         return '';
     }
 
-    $response['site']['logo'] = get_logo_url_from_config('logo');
-    $response['site']['logocompact'] = get_logo_url_from_config('logocompact');
-    $response['site']['favicon'] = get_logo_url_from_config('favicon');
+    $response['site']['logo'] = get_logo_data_from_config('logo');
+    $response['site']['logocompact'] = get_logo_data_from_config('logocompact');
+    $response['site']['favicon'] = get_logo_data_from_config('favicon');
 
     // Basic query to fetch courses.
     // In a real scenario, we would join with custom fields.
