@@ -249,20 +249,21 @@ const LandingPage = () => {
                 .hero-title b, 
                 .hero-title span[style*="bold"], 
                 .hero-title span[style*="700"] {
-                    color: transparent !important; /* Fallback */
-                    -webkit-text-fill-color: transparent !important; /* Critical for Safari/Chrome */
+                    /* Reset everything to ensure gradient takes over */
+                    color: transparent !important;
+                    -webkit-text-fill-color: transparent !important;
                     
+                    /* The Gradient - Using shorthand 'background' is often more robust for clip */
+                    background: linear-gradient(135deg, #199EDA 0%, #E30613 100%) !important;
                     background-clip: text !important;
                     -webkit-background-clip: text !important;
                     
-                    /* Logo Colors Gradient: Blue (#199EDA) -> Red (#E30613) */
-                    background-image: linear-gradient(135deg, #199EDA 0%, #E30613 100%);
+                    /* Layout criticals for clip to work on inline elements */
+                    display: inline !important; 
+                    box-decoration-break: clone !important;
+                    -webkit-box-decoration-break: clone !important;
                     
                     font-weight: 800 !important;
-                    
-                    /* Ensure gradient wraps correctly across lines */
-                    -webkit-box-decoration-break: clone;
-                    box-decoration-break: clone;
                 }
             `}</style>
         </div>
