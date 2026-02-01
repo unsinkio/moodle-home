@@ -65,19 +65,16 @@ const LandingPage = () => {
             const h2Node = doc.querySelector('h2') || doc.querySelector('h4'); // Moodle 'Medium' often H4
 
             if (h1Node) {
-                h1Text = h1Node.textContent;
+                // Use innerHTML to preserve BOLD tags for styling
+                h1Text = h1Node.innerHTML;
                 // If we found H1, try to find H2 that is NOT the same node
                 if (h2Node && h2Node !== h1Node) {
                     h2Text = h2Node.textContent;
-                } else {
-                    // If no explicit H2, maybe the next sibling generic tag?
-                    // basic fallback: just use the rest of the text? 
-                    // Let's stick to user prompt: "The first sentence in Heading Large, second in Heading Medium"
                 }
             } else {
                 // If no headers found, maybe just paragraphs?
                 const pNodes = doc.querySelectorAll('p');
-                if (pNodes.length > 0) h1Text = pNodes[0].textContent;
+                if (pNodes.length > 0) h1Text = pNodes[0].innerHTML;
                 if (pNodes.length > 1) h2Text = pNodes[1].textContent;
             }
 
@@ -127,15 +124,11 @@ const LandingPage = () => {
 
                         {/* Heading */}
                         <div className="space-y-6">
-                            {/* We maintain the styling but inject dynamic text. 
-                                We might lose the specific gradient split "depth, clarity..." unless we robustly detect it.
-                                For now, we apply the main text style. If the user wants the gradient, 
-                                we can apply it to the whole text or just render it standard brand-black.
-                                Let's apply a subtle gradient to the whole H1 to look premium.
-                            */}
-                            <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-brand-black leading-[1.05]">
-                                {heroContent.h1}
-                            </h1>
+                            {/* Render H1 as HTML to allow 'strong' tags for gradient effect */}
+                            <h1
+                                className="hero-title text-5xl lg:text-7xl font-bold tracking-tight text-brand-black leading-[1.05]"
+                                dangerouslySetInnerHTML={{ __html: heroContent.h1 }}
+                            />
                             <p className="text-xl lg:text-2xl text-brand-gray-dark max-w-2xl font-light leading-relaxed">
                                 {heroContent.h2}
                             </p>
@@ -250,6 +243,14 @@ const LandingPage = () => {
                     box-shadow: 
                         0 20px 40px rgba(0,0,0,0.06),
                         0 1px 2px rgba(0,0,0,0.02);
+                }
+                /* 4. HERO RICH TEXT STYLING */
+                .hero-title strong, .hero-title b {
+                    color: transparent;
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    background-image: linear-gradient(to right, #199EDA, #0077B5);
+                    font-weight: 800; /* Extra bold for emphasis */
                 }
             `}</style>
         </div>
