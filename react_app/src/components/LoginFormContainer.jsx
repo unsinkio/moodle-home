@@ -114,26 +114,26 @@ const LoginFormContainer = () => {
                 .login-wrapper button.btn-primary, .login-wrapper button.btn-secondary, .login-wrapper input[type="submit"] {
                     background: #1d1d1f !important; /* Apple Black */
                     color: white !important;
-                    border-radius: 14px !important;
+                    border-radius: 12px !important; /* Slightly tighter radius */
                     width: 100%;
-                    padding: 16px;
+                    padding: 12px; /* Compact padding (was 16px) */
                     font-weight: 600;
                     border: none;
                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-                    font-size: 1rem;
+                    font-size: 0.95rem;
                 }
                 .login-wrapper button:hover, .login-wrapper input[type="submit"]:hover {
                     background: #000 !important;
-                    transform: scale-[1.02];
-                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+                    transform: scale-[1.01]; /* Subtle scale */
+                    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
                 }
                 
                 /* Potential IDPs (OAuth Buttons - Fixed Selector) */
                 .potential-idps, .login-identityproviders {
                     display: flex;
                     flex-direction: column;
-                    gap: 12px;
+                    gap: 8px; /* Tighter gap (was 12px) */
                     margin-top: 0.5rem;
                     width: 100%;
                 }
@@ -144,28 +144,30 @@ const LoginFormContainer = () => {
                     align-items: center;
                     justify-content: center;
                     width: 100%;
-                    padding: 14px;
+                    padding: 10px; /* Compact padding (was 14px) */
                     background: white !important;
                     border: 1px solid #e5e5e5 !important;
-                    border-radius: 12px !important;
+                    border-radius: 10px !important; /* Match compact feel */
                     color: #1d1d1f !important;
                     font-weight: 500;
                     text-decoration: none;
                     transition: all 0.2s;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
                     margin-bottom: 0 !important; /* Override moodle margin */
+                    font-size: 0.9rem; /* Slightly smaller text */
+                    min-height: 44px; /* Ensure clickable area */
                 }
                 .potential-idps a:hover, .login-identityproviders a:hover {
                     background: #fbfbfd !important;
                     border-color: #d2d2d7 !important;
-                    transform: translateY(-1px);
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+                    transform: translateY(0); /* Remove jump */
+                    background-color: #f5f5f7 !important;
                 }
                 /* Images inside buttons */
                 .potential-idps img, .login-identityproviders img {
-                    margin-right: 12px;
-                    height: 20px;
-                    width: 20px;
+                    margin-right: 10px;
+                    height: 18px; /* Slightly smaller icon */
+                    width: 18px;
                 }
                 
                 .login-wrapper .login-form .form-label {
